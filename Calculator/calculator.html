@@ -1,0 +1,106 @@
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <style>
+        button {
+            width: 45px;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <input id="displayOperation" type="text" placeholder="0" readonly 
+        style="display: flex; margin: auto; color: black;"> 
+        <input id="displayResult" type="text" placeholder="0" readonly 
+        style="display: flex; margin: auto;"> 
+    </div>
+    <div>
+        <table style="display: flex; margin: auto; width: max-content">
+            <tr>
+                <td><button type="button" class="btn btn-secondary btn-sm">%</button></td>
+                <td><button type="button" class="btn btn-secondary btn-sm">CE</button></td>
+                <td><button type="button" class="btn btn-secondary btn-sm">C</button></td>
+                <td><button type="button" class="btn btn-secondary btn-sm">DEL</button></td>
+            </tr>
+            <tr>
+                <td><button type="button" class="btn btn-secondary btn-sm">1/X</button></td>
+                <td><button type="button" class="btn btn-secondary btn-sm">X^2</button></td>
+                <td><button type="button" class="btn btn-secondary btn-sm">SQRT</button></td>
+                <td><button onclick="Calc()" type="button" class="btn btn-secondary btn-sm">/</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="GetDigit()" type="button" class="btn btn-secondary btn-sm">7</button></td>
+                <td><button onclick="GetDigit()" type="button" class="btn btn-secondary btn-sm">8</button></td>
+                <td><button onclick="GetDigit()" type="button" class="btn btn-secondary btn-sm">9</button></td>
+                <td><button onclick="Calc()" type="button" class="btn btn-secondary btn-sm">*</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="GetDigit()" type="button" class="btn btn-secondary btn-sm">4</button></td>
+                <td><button onclick="GetDigit()" type="button" class="btn btn-secondary btn-sm">5</button></td>
+                <td><button onclick="GetDigit()" type="button" class="btn btn-secondary btn-sm">6</button></td>
+                <td><button onclick="Calc()" type="button" class="btn btn-secondary btn-sm">-</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="GetDigit()" type="button" class="btn btn-secondary btn-sm">1</button></td>
+                <td><button onclick="GetDigit()" type="button" class="btn btn-secondary btn-sm">2</button></td>
+                <td><button onclick="GetDigit()" type="button" class="btn btn-secondary btn-sm">3</button></td>
+                <td><button onclick="Calc()" type="button" class="btn btn-secondary btn-sm">+</button></td>
+            </tr>
+            <tr>
+                <td><button type="button" class="btn btn-secondary btn-sm">+/-</button></td>
+                <td><button onclick="GetDigit('0')" type="button" class="btn btn-secondary btn-sm">0</button></td>
+                <td><button type="button" class="btn btn-secondary btn-sm">.</button></td>
+                <td><button onclick="Equal()" type="button" class="btn btn-secondary btn-sm">=</button></td>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+        <script>
+            let mem = 0
+            let operator = "+"
+            let userInput = ""
+
+            function GetDigit() {
+                if (userInput.length > 10)
+                    return
+
+                dig = event.target.innerText
+                
+                if (userInput == "")
+                {
+                    userInput = dig
+                }
+                else
+                {
+                    userInput += dig
+                }
+
+                displayResult.value = userInput
+            }
+
+            function Calc() {
+                mem = eval (mem + operator + Number(displayResult.value))
+
+                operator = event.target.innerText
+                displayOperation.value = mem + operator
+                userInput = ""
+            }
+
+            function Equal() {
+                mem = eval (mem + operator + Number(displayResult.value))
+                displayResult = mem
+
+                operator = "+"
+                displayOperation.value = mem + operator
+                userInput = ""
+            }
+            
+        </script>
+    </div>
+</body>
+
+</html>
