@@ -1,0 +1,96 @@
+<html lang="en">
+<head>
+</head>
+<body>
+    <input id="textbox" type="text"> <br>
+    <button onclick="PushArr()">Add</button><button onclick="FindArrElem()">Find</button><button
+        onclick="DeleteArrElem()">Delete</button><button onclick="PrintArr()">Display All</button> <br> <br>
+    <button onclick="GoToStart()"> << </button><button onclick="DecIdx()"> < </button><button id="middle">1 of 4</button>
+    <button onclick="IncIdx()">></button><button onclick="GoToEnd()">>></button> <br> <br>
+    <input id="arrayDisplay" type="text" readonly> <br> <br>
+
+                    <script>
+                        let strArr = ["abc", "asf", "bad", "aabb"]
+                        let viewIdx = 1
+                        textbox.value = strArr[viewIdx - 1]
+
+                        PrintArr()
+
+                        function PushArr() {
+                            strArr.push(textbox.value)
+                            middle.innerText = `${viewIdx} of ${strArr.length}`
+                        }
+
+                        function FindArrElem() {
+                            const idx = MyFindIndex(textbox.value)
+
+                            if (idx > 0) {
+                                middle.innerText = `${idx} of ${strArr.length}`
+                                viewIdx = idx
+                            }
+                        }
+
+                        function DeleteArrElem() {
+                            const idx = MyFindIndex(textbox.value)
+
+                            if (idx > 0) {
+                                strArr.splice(idx - 1, 1)
+                                middle.innerText = `${viewIdx} of ${strArr.length}`
+                                GoToStart()
+                            }
+                        }
+
+                        function DecIdx() {
+                            if (viewIdx > 1) {
+                                --viewIdx
+                                textbox.value = strArr[viewIdx - 1]
+                                middle.innerText = `${viewIdx} of ${strArr.length}`
+                            }
+                        }
+
+                        function IncIdx() {
+                            if (viewIdx < strArr.length) {
+                                ++viewIdx
+                                textbox.value = strArr[viewIdx - 1]
+                                middle.innerText = `${viewIdx} of ${strArr.length}`
+                            }
+                        }
+
+                        function GoToStart() {
+                            if (strArr.length){
+                                viewIdx = 1
+                                textbox.value = strArr[viewIdx - 1]
+                                middle.innerText = `${viewIdx} of ${strArr.length}`
+                                // PrintArr()
+                            }
+                        }
+
+                        function GoToEnd() {
+                            viewIdx = strArr.length
+
+                            if (viewIdx > 0){
+                                textbox.value = strArr[viewIdx - 1]
+                                middle.innerText = `${viewIdx} of ${strArr.length}`
+                                // PrintArr()
+                            }
+                        }
+
+                        //utils
+
+                        // starts from 1, return 0 if not found
+                        function MyFindIndex(param) {
+                            const isEqual = (elem) => elem == param;
+
+                            return strArr.findIndex(isEqual) + 1;
+                        }
+
+                        function PrintArr() {
+                            arrayDisplay.value = strArr
+                        }
+
+
+
+        // make function update scrollbar
+                    </script>
+</body>
+</html>

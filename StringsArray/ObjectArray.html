@@ -1,0 +1,110 @@
+<html lang="en">
+<head>
+</head>
+<body>
+    <input id="textbox1" type="text"> <br>
+    <input id="textbox2" type="text"> <br>
+    <input id="textbox3" type="text"> <br>
+
+    <button onclick="PushArr()">Add</button><button onclick="FindArrElem()">Find</button><button
+        onclick="DeleteArrElem()">Delete</button><button onclick="PrintArr()">Display All</button> <br> <br>
+    <button onclick="GoToStart()">
+        &lt&lt </button><button onclick="DecIdx()">
+            &lt </button><button id="middle">1 of 4</button>
+                    <button onclick="IncIdx()">&rt</button><button onclick="GoToEnd()">&rt&rt</button> <br> <br>
+
+                    <div id="arrayDisplay"></div> <br>
+
+                    <script>
+                        let objArr = [
+                            { field1: 'aaa', field2: 111, field3: true },
+                            { field1: 'bbb', field2: 222, field3: false },
+                            { field1: 'ccc', field2: 333, field3: true },
+                            { field1: 'ddd', field2: 444, field3: false }]
+                            
+                        let viewIdx = 1
+
+                        UpdatePageBar()
+                        PrintArr()
+
+                        function PushArr() {
+                            objArr.push({ field1: textbox1.value, field2: textbox2.value, field3: textbox3.value })
+                            UpdatePageBar()
+                        }
+
+                        function FindArrElem() {
+                            const idx = MyFindIndex()
+
+                            if (idx > 0) {
+                                viewIdx = idx
+                                UpdatePageBar()
+                            }
+                        }
+
+                        function DeleteArrElem() {
+                            const idx = MyFindIndex()
+
+                            if (idx > 0) {
+                                objArr.splice(idx - 1, 1)
+                                middle.innerText = `${viewIdx} of ${objArr.length}`
+                                GoToStart()
+                            }
+                        }
+
+                        function DecIdx() {
+                            if (viewIdx > 1) {
+                                --viewIdx
+                                UpdatePageBar()
+                            }
+                        }
+
+                        function IncIdx() {
+                            if (viewIdx < objArr.length) {
+                                ++viewIdx
+                                UpdatePageBar()
+                            }
+                        }
+
+                        function GoToStart() {
+                            if (objArr.length) {
+                                viewIdx = 1
+                                UpdatePageBar()
+                                // PrintArr()
+                            }
+                        }
+
+                        function GoToEnd() {
+                            viewIdx = objArr.length
+
+                            if (viewIdx > 0) {
+                                UpdatePageBar()
+                                // PrintArr()
+                            }
+                        }
+
+                        //utils
+
+                        // starts from 1, return 0 if not found
+                        function MyFindIndex() {
+                            const isEqual = (elem) =>
+                            ((elem.field1 == textbox1.value) &&
+                                (elem.field2 == textbox2.value) &&
+                                (elem.field3 == JSON.parse(textbox3.value)))
+
+                            return objArr.findIndex(isEqual) + 1;
+                        }
+
+                        function PrintArr() {
+                            arrayDisplay.innerText = JSON.stringify(objArr)
+                        }
+
+                        function UpdatePageBar() {
+                            textbox1.value = objArr[viewIdx - 1].field1
+                            textbox2.value = objArr[viewIdx - 1].field2
+                            textbox3.value = objArr[viewIdx - 1].field3
+                            middle.innerText = `${viewIdx} of ${objArr.length}`
+                        }
+        // make function update scrollbar
+                    </script>
+</body>
+</html>
