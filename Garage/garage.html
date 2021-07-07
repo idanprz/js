@@ -1,0 +1,131 @@
+<html lang="en">
+
+<head>
+</head>
+
+<body>
+    <button onclick="addCustomer()">Add Customer</button>
+    <input id='customerName' placeholder="Name">
+    <input id='customerTel' placeholder="Tel">
+    <br>Customers:<div id="displayCustomers" style="padding: 10px;margin: 10px;background-color: rgb(198, 236, 200)">
+    </div>
+    Cars:<div id="displayCars" style="padding: 10px;background-color: rgb(62, 16, 134);"></div>
+    Treatments:<div id="displayTreatments" style="padding: 10px;background-color: rgb(40, 172, 46);"></div>
+    <script>
+        //entities
+        let customers = []
+        let cars = []
+        let treatments = []
+        let customerId = 0;
+        let carId = 0;
+        let treatmentId=0;
+        //****************************************** customers start *************
+        //Logic -  add/delete/find /gui...
+        function addCustomer() {
+            customers.push({ id: ++customerId, name: customerName.value, Tel: customerTel.value })
+            customersGUI()
+            console.log(customers)
+        }
+
+        function test() {
+            // customers
+            // customers.push({ id: PK, name: 'abc', Tel: 5655 })
+            customers.push({ id: ++customerId, name: 'abc', Tel: 5655 })
+            customers.push({ id: ++customerId, name: 'test', Tel: 77 })
+
+            // Cars
+            cars.push({ id: ++carId, customerId: customerId, color: 'blue' })
+            cars.push({ id: ++carId, customerId: customerId, color: 'green' })
+
+            console.log(customers)
+            customersGUI()
+            carsGUI()
+        }
+        test()
+
+        function customersGUI() {
+            displayCustomers.innerHTML = ``
+            for (let index = 0; index < customers.length; index++) {
+                displayCustomers.innerHTML += `<div style=";;;;;;margin: 10px;background-color: rgb(220, 220, 220);">
+                   <span> <h2>${customers[index].name}  <button onclick="delCustomer(${index})">Del</button></h2></span>
+                   <button onclick="addCar(${index},'red')">Add car</button>
+                    </div>`
+
+            }
+        }
+
+        function delCustomer(ind) {
+            customers.splice(ind, 1)
+            customersGUI()
+        }
+        //****************************************** Customers END *************
+        //****************************************** Cars start *************
+        //Logic -  add/delete/find /gui...
+        function addCar(id, favColor) {
+            // cars.push({ id: PK, customerId: FK, color: favColor })
+            cars.push({ id: ++carId, customerId: id, color: favColor })
+            carsGUI()
+            console.log(cars)
+        }
+        function carsGUI() {
+            displayCars.innerHTML = ``
+            for (let index = 0; index < cars.length; index++) {
+                displayCars.innerHTML += `<div style=";;;;;;margin: 10px;background-color: rgb(220, 220, 220);">
+                    ${cars[index].id} <span> <h2>${cars[index].color}  
+                        <button onclick="addTreatment(${index})">add Treatment</button>
+                        <button onclick="delCar(${index})">Del</button></h2></span>
+                    </div>`
+
+            }
+        }
+        
+        function delCar(ind) {
+            cars.splice(ind, 1)
+            carsGUI()
+            console.log(cars)
+        }
+        //****************************************** Cars END *************
+
+        //****************************************** Treatments start *************
+        //Logic -  add/delete/find /gui...
+        function addTreatment(id) {
+            // treatments.push({ id: PK, carID: FK })
+            treatments.push({ id: ++treatmentId, carID: id })
+            treatmentsGUI()
+            console.log(treatments)
+        }
+
+        function treatmentsGUI() {
+            displayTreatments.innerHTML = ``
+            for (let index = 0; index < treatments.length; index++) {
+                displayTreatments.innerHTML += `<div style=";;;;;;margin: 10px;background-color: rgb(220, 220, 220);">
+                    ${treatments[index].id} <span> <h2>${treatments[index].carID}  </h2></span>
+                    </div>`
+
+            }
+        }
+
+        
+        //****************************************** Treatments END *************
+    </script>
+</body>
+</html>
+
+<!-- 
+Status:
+    Customer
+        add  -Done
+        delete - Done
+        find - not started
+        gui - Done
+    Car
+        add - Done
+        delete -Done
+        find - not started
+        gui - Done
+    Treatments
+        add - Done
+        delete - not need
+        find - not started
+        gui - Done
+ -->

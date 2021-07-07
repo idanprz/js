@@ -11,80 +11,70 @@
     <button onclick="DisplayCart()">Cart</button>
     <button onclick="DisplayMarket()">Market</button> <br><br>
 
-    <label for="userDisplay"></label>
     <div id="userDisplay"></div> <br> <br>
 
-
     <script>
-        // buttons for methods
         // buttons for cursor ???
 
         const MarketProducts = [
-            { id: 1, price: 1, name: 'prod1', amount: 0 },
-            { id: 2, price: 2, name: 'prod2', amount: 0 },
-            { id: 3, price: 3, name: 'prod3', amount: 0 },
-            { id: 4, price: 4, name: 'prod4', amount: 0 },
-            { id: 5, price: 5, name: 'prod5', amount: 0 },
-            { id: 6, price: 6, name: 'prod6', amount: 0 },
-            { id: 7, price: 7, name: 'prod7', amount: 0 },
-            { id: 8, price: 8, name: 'prod8', amount: 0 },
-            { id: 9, price: 9, name: 'prod9', amount: 0 },
-            { id: 10, price: 10, name: 'prod10', amount: 0 },
-            { id: 11, price: 11, name: 'prod11', amount: 0 },
-            { id: 12, price: 12, name: 'prod12', amount: 0 },
-            { id: 13, price: 13, name: 'prod13', amount: 0 },
-            { id: 14, price: 14, name: 'prod14', amount: 0 },
-            { id: 15, price: 15, name: 'prod15', amount: 0 },
-            { id: 16, price: 16, name: 'prod16', amount: 0 },
-            { id: 17, price: 17, name: 'prod17', amount: 0 },
-            { id: 18, price: 18, name: 'prod18', amount: 0 },
-            { id: 19, price: 19, name: 'prod19', amount: 0 },
-            { id: 20, price: 20, name: 'prod20', amount: 0 },
-            { id: 21, price: 21, name: 'milk', amount: 0 },
-            { id: 22, price: 22, name: 'bread', amount: 0 }
+            { id: 1, price: 1, name: 'prod1', quantity: 0 },
+            { id: 2, price: 2, name: 'prod2', quantity: 0 },
+            { id: 3, price: 3, name: 'prod3', quantity: 0 },
+            { id: 4, price: 4, name: 'prod4', quantity: 0 },
+            { id: 5, price: 5, name: 'prod5', quantity: 0 },
+            { id: 6, price: 6, name: 'prod6', quantity: 0 },
+            { id: 7, price: 7, name: 'prod7', quantity: 0 },
+            { id: 8, price: 8, name: 'prod8', quantity: 0 },
+            { id: 9, price: 9, name: 'prod9', quantity: 0 },
+            { id: 10, price: 10, name: 'prod10', quantity: 0 },
+            { id: 11, price: 11, name: 'prod11', quantity: 0 },
+            { id: 12, price: 12, name: 'prod12', quantity: 0 },
+            { id: 13, price: 13, name: 'prod13', quantity: 0 },
+            { id: 14, price: 14, name: 'prod14', quantity: 0 },
+            { id: 15, price: 15, name: 'prod15', quantity: 0 },
+            { id: 16, price: 16, name: 'prod16', quantity: 0 },
+            { id: 17, price: 17, name: 'prod17', quantity: 0 },
+            { id: 18, price: 18, name: 'prod18', quantity: 0 },
+            { id: 19, price: 19, name: 'prod19', quantity: 0 },
+            { id: 20, price: 20, name: 'prod20', quantity: 0 },
+            { id: 21, price: 21, name: 'milk', quantity: 0 },
+            { id: 22, price: 22, name: 'bread', quantity: 0 }
         ]
+
         let CartProducts = []
 
         let totalBill = 0
 
-
-
-        // Add(name) adds to cart
-        // find item in MarketProducts, push to cart (later check if exists then increase amount)
-        function AddToCart(name) {
-            const marketIdx = FindElemIndex(MarketProducts, name)
-            const cartIdx = FindElemIndex(CartProducts, name)
+        function AddToCart(prodName) {
+            const marketIdx = FindElemIndex(MarketProducts, prodName)
+            const cartIdx = FindElemIndex(CartProducts, prodName)
 
             if (marketIdx < 0) {
                 return
             }
 
             if (cartIdx > -1) {
-                ++CartProducts[cartIdx].amount
+                ++CartProducts[cartIdx].quantity
             }
             else{
                 CartProducts.push(MarketProducts[marketIdx])
-                ++CartProducts[CartProducts.length - 1].amount
+                ++CartProducts[CartProducts.length - 1].quantity
             }
 
             totalBill += MarketProducts[marketIdx].price
         }
 
-        // Rem(name) remove from cart
-        // find name, if exists splice from cart (later update total -= amount*price)
         function RemFromCart(name) {
             const idx = FindElemIndex(CartProducts, name)
 
             if (idx > -1) {
-                totalBill -= CartProducts[idx].price * CartProducts[idx].amount
+                totalBill -= CartProducts[idx].price * CartProducts[idx].quantity
                 CartProducts.splice(idx, 1)
                 
                 DisplayCart()
             }
         }
 
-        // Find(name)
-        // find index of name and return elem
         function FindProduct(name) {
             let idx = FindElemIndex(MarketProducts, name)
 
@@ -95,22 +85,6 @@
             }
         }
 
-        // utils
-
-        function FindElemIndex(arr, name) {
-            const isEqual = (elem) => elem.name == name
-
-            return arr.findIndex(isEqual);
-        }
-
-        function DisplayProduct(index) {
-            const product = MarketProducts[index]
-
-            textbox1.value = product.id
-            textbox2.value = product.name
-            textbox3.value = product.price
-        }
-
         function DisplayMarket() {
             let display = ''
 
@@ -118,7 +92,7 @@
                 display += `<div  style="background-color: cadetblue; margin: 1%">
                 <button id="prod${i}" onclick="AddToCart(MarketProducts[${i}].name)">Add ${MarketProducts[i].name}</button> <br>
                 name: ${MarketProducts[i].name} <br>
-                price: ${MarketProducts[i].price}</div>`
+                price: ${MarketProducts[i].price}$</div>`
             }
 
             userDisplay.innerHTML = display
@@ -131,13 +105,22 @@
                 display += `<div  style="background-color: cadetblue; margin: 1%">
                 <button onclick="RemFromCart(CartProducts[${i}].name)">Remove ${CartProducts[i].name}</button> <br>
                 name: ${CartProducts[i].name} <br>
-                price: ${CartProducts[i].price} <br>
-                amount: ${CartProducts[i].amount}</div><br>`
+                price: ${CartProducts[i].price}$ <br>
+                quantity: ${CartProducts[i].quantity}<br>
+                total: ${CartProducts[i].quantity * CartProducts[i].price}$</div>`
             }
 
-            display += `Total bill: ${totalBill}`
+            display += `Total bill: ${totalBill}$`
 
             userDisplay.innerHTML = display
+        }
+
+        // utils
+
+        function FindElemIndex(arr, name) {
+            const isEqual = (elem) => elem.name == name
+
+            return arr.findIndex(isEqual);
         }
 
     </script>

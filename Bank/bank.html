@@ -1,0 +1,134 @@
+<html lang="en">
+<head>
+    <title>Bank</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+    <h1>Bank</h1>
+
+    <div id="userDisplay"></div> <br> <br>
+
+    <script>
+        //###################################################### Costumer class ######################################################
+        class Costumer {
+
+            static instanceCount = 0
+            name = ''
+            id = 0
+            balance = 0
+            isActive = false
+
+            constructor(name, balance) {
+                this.name = name
+                this.id = ++Costumer.instanceCount
+                this.balance = balance
+                this.isActive = true
+            }
+
+            deposit = function deposit(amount) {
+                this.balance += amount
+            }
+            withdraw = function withdraw(amount) {
+                this.balance -= amount
+            }
+
+            display = function display() {
+                DisplayAllCustomers()
+                document.getElementById('infoDisplay' + (this.id - 1)).innerHTML = 
+                `<b>Name</b>: ${this.name} <br> <b>Balance</b>: ${this.balance}$ <br><br>`
+            }
+
+            remove = function remove() {
+                this.isActive = false
+                DisplayAllCustomers()
+            }
+        }
+
+        //###################################################### Demo test ######################################################
+
+        function InitArray() {
+            var costumers = []
+
+            for (let i = 0; i < 10; ++i) {
+                costumers[i] = new Costumer(`cust${i + 1}`, i * 100 + 100)
+            }
+
+            return costumers
+        }
+
+        var costumers = InitArray()
+
+        DisplayAllCustomers()
+
+        //###################################################### API funcs ######################################################
+
+        function DisplayCostumerInfo(name) {
+            let idx = FindCustIndex(name)
+
+            if (idx < 0) {
+                return
+            }
+
+            costumers[idx].display()
+        }
+
+        function RemoveCostumer(name) {
+            let idx = FindCustIndex(name)
+
+            if (idx < 0) {
+                return
+            }
+
+            costumers[idx].remove()
+        }
+
+        function DepositAll(costumers, amount) {
+            for (let i = 0; i < costumers.length; ++i) {
+                costumers[i].deposit(amount)
+            }
+        }
+
+        function WithdrawAll(costumers, amount) {
+            for (let i = 0; i < costumers.length; ++i) {
+                costumers[i].withdraw(amount)
+            }
+        }
+
+        function BankCapital(costumers) {
+            let capital = 0
+
+            for (let i = 0; i < costumers.length; ++i) {
+                capital += costumers[i].balance
+            }
+
+            return capital
+        }
+
+        //###################################################### utils ######################################################
+
+        function FindCustIndex(name) {
+            const isEqual = (elem) => elem.name == name
+
+            return costumers.findIndex(isEqual);
+        }
+
+        function DisplayAllCustomers() {
+            let display = ''
+
+            for (let i = 0; i < costumers.length; i++) {
+                if (costumers[i].isActive == true) {
+                    display += `<div style="background-color: cadetblue; margin: 1%">
+                                <span><u><b>${costumers[i].name}</u></b>
+                                <button onclick="DisplayCostumerInfo(costumers[${i}].name)" class="btn btn-primary">Display info</button> 
+                                <button onclick="RemoveCostumer(costumers[${i}].name)" class='btn btn-danger'>Remove</button></span><br><br>
+                                <div id='infoDisplay${i}'></div></div>`
+                }
+            }
+
+            userDisplay.innerHTML = display
+        }
+
+    </script>
+
+</body>
+</html>
