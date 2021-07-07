@@ -1,12 +1,13 @@
-<html lang="en">
-<head>
-    <title>Bank</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-</head>
+<link rel="stylesheet" href="https://allyoucan.cloud/cdn/icofont/1.0.1/icofont.css"
+    integrity="sha384-jbCTJB16Q17718YM9U22iJkhuGbS0Gd2LjaWb4YJEZToOPmnKDjySVa323U+W7Fv" crossorigin="anonymous">
+<link rel="stylesheet" href="./bank.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<head></head>
 <body>
     <h1>Bank</h1>
 
-    <div id="userDisplay"></div> <br> <br>
+    
 
     <script>
         //###################################################### Costumer class ######################################################
@@ -17,6 +18,7 @@
             id = 0
             balance = 0
             isActive = false
+            isExpanded = false
 
             constructor(name, balance) {
                 this.name = name
@@ -26,21 +28,51 @@
             }
 
             deposit = function deposit(amount) {
-                this.balance += amount
+                this.balance += Number(amount)
+                const idx = this.id - 1
+
+                const disp = document.getElementById(`balanceDisplay${idx}`)
+                const textbox = document.getElementById(`amountTextbox${idx}`)
+
+                disp.innerHTML = `${this.balance}$`
+                textbox.value = textbox.placeholder
+
+                this.isExpanded = false
+                DisplayAllCostomers()
+
+                this.display()
             }
+            
             withdraw = function withdraw(amount) {
-                this.balance -= amount
+                this.balance -= Number(amount)
+                const idx = this.id - 1
+
+                const disp = document.getElementById(`balanceDisplay${idx}`)
+                const textbox = document.getElementById(`amountTextbox${idx}`)
+
+                disp.innerHTML = `${this.balance}$`
+                textbox.value = textbox.placeholder
+
+                this.isExpanded = false
+                DisplayAllCostomers()
+
+                this.display()
             }
 
             display = function display() {
-                DisplayAllCustomers()
-                document.getElementById('infoDisplay' + (this.id - 1)).innerHTML = 
-                `<b>Name</b>: ${this.name} <br> <b>Balance</b>: ${this.balance}$ <br><br>`
+                if (this.isExpanded == true) {
+                    document.getElementById(`infoDisplay${this.id}`).style.display = 'none'
+                    this.isExpanded = false
+                }
+                else {
+                    document.getElementById(`infoDisplay${this.id}`).style.display = 'block'
+                    this.isExpanded = true
+                }
             }
 
             remove = function remove() {
                 this.isActive = false
-                DisplayAllCustomers()
+                DisplayAllCostomers()
             }
         }
 
@@ -50,7 +82,7 @@
             var costumers = []
 
             for (let i = 0; i < 10; ++i) {
-                costumers[i] = new Costumer(`cust${i + 1}`, i * 100 + 100)
+                costumers[i] = new Costumer(`cost${i + 1}`, i * 100 + 100)
             }
 
             return costumers
@@ -58,77 +90,97 @@
 
         var costumers = InitArray()
 
-        DisplayAllCustomers()
+        DisplayAllCostomers()
 
         //###################################################### API funcs ######################################################
 
-        function DisplayCostumerInfo(name) {
-            let idx = FindCustIndex(name)
-
-            if (idx < 0) {
-                return
-            }
-
+        function DisplayCostumerInfo(idx) {
             costumers[idx].display()
         }
 
-        function RemoveCostumer(name) {
-            let idx = FindCustIndex(name)
-
-            if (idx < 0) {
-                return
-            }
-
+        function RemoveCostumer(idx) {
             costumers[idx].remove()
         }
 
-        function DepositAll(costumers, amount) {
+        function DepositAll(amount) {
             for (let i = 0; i < costumers.length; ++i) {
                 costumers[i].deposit(amount)
             }
         }
 
-        function WithdrawAll(costumers, amount) {
+        function WithdrawAll(amount) {
             for (let i = 0; i < costumers.length; ++i) {
                 costumers[i].withdraw(amount)
             }
         }
 
-        function BankCapital(costumers) {
-            let capital = 0
+        function BankFunds() {
+            let funds = 0
 
             for (let i = 0; i < costumers.length; ++i) {
-                capital += costumers[i].balance
+                funds += costumers[i].balance
             }
 
-            return capital
+            alert(`Total bank funds: ${funds}$`)
         }
 
         //###################################################### utils ######################################################
 
-        function FindCustIndex(name) {
-            const isEqual = (elem) => elem.name == name
+        function DisplayAllCostomers() {
+            let display = ` <button onclick="DepositAll(100)" class="btn btn-sm btn-success">Credit</button>
+                            <button onclick="WithdrawAll(200)" class="btn btn-sm btn-danger">Commision</button>
+                            <button onclick="BankFunds(200)" class="btn btn-sm btn-info">Total Funds</button>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="osahan-account-page-right shadow-sm bg-white p-4 h-100">
+                                            <div class="tab-content" id="myTabContent">
+                                                <div class="tab-pane  fade  active show" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                                                    <h4 class="font-weight-bold mt-0 mb-4">My Bank</h4>`
 
-            return costumers.findIndex(isEqual);
-        }
+            for (let idx = 0; idx < costumers.length; idx++) {
+                if (costumers[idx].isActive == true) {
+                    const costID = idx + 1
 
-        function DisplayAllCustomers() {
-            let display = ''
-
-            for (let i = 0; i < costumers.length; i++) {
-                if (costumers[i].isActive == true) {
-                    display += `<div style="background-color: cadetblue; margin: 1%">
-                                <span><u><b>${costumers[i].name}</u></b>
-                                <button onclick="DisplayCostumerInfo(costumers[${i}].name)" class="btn btn-primary">Display info</button> 
-                                <button onclick="RemoveCostumer(costumers[${i}].name)" class='btn btn-danger'>Remove</button></span><br><br>
-                                <div id='infoDisplay${i}'></div></div>`
+                    display += `<div class="bg-white card mb-4 order-list shadow-sm">
+                                    <div class="gold-members p-4">
+                                        <div class="media">
+                                            <span class="text-white bg-dark">CostName${costID}</span><br>
+                                            <div class="media-body">
+                                                <div class="float-right">
+                                                    <button onclick="DisplayCostumerInfo(${idx})" class="btn btn-sm btn-success"><i class="icofont-info"></i>Show info</a>
+                                                    <button onclick="RemoveCostumer(${idx})" class="btn btn-sm btn-danger"><i class="icofont-close"></i>
+                                                        Remove</a>
+                                                </div>
+                                                <div id="infoDisplay${costID}" style="display: none;">
+                                                    <p class="mb-0 text-black text-primary pt-2">
+                                                        <span class="text-black font-weight-bold">
+                                                            To add more info... <br>
+                                                            <label for="amount">Balance: </label>
+                                                            <div id="balanceDisplay${idx}">${costumers[idx].balance}$</div>
+                                                            <label for="amount">Enter amount: </label>
+                                                            <input id="amountTextbox${idx}" placeholder="Amount"> <br><br>
+                                                            
+                                                            <button class="btn btn-primary" onclick="costumers[${idx}].withdraw(amountTextbox${idx}.value)"><i class="icofont-minus">Withdraw</i></button>
+                                                            <button class="btn btn-primary" onclick="costumers[${idx}].deposit(amountTextbox${idx}.value)"><i class="icofont-plus">Deposit</i></button>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                                <hr>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`
                 }
             }
 
-            userDisplay.innerHTML = display
+            display += `</div></div></div></div></div></div>`
+
+            document.body.innerHTML = display
         }
 
     </script>
 
 </body>
+
 </html>
