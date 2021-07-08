@@ -1,0 +1,74 @@
+<!-- array of nums paint even blue odd red
+array of nums paint even index blue odd red -->
+
+<html lang="en">
+<head>
+</head>
+<body>
+    <script>
+        let nums = []
+        let body = ''
+
+        for (let i = 0; i < 15; ++i) {
+            nums[i] = Math.floor(Math.random()*20)
+        }
+
+        body += "Blue even red odd (by value):"
+        body += '<br>'
+
+        nums.forEach(num => {
+            if (num % 2 == 0) {
+                body += `<span style="color: blue;">${num}</span> `
+            }
+            else
+            {
+                body += `<span style="color: red;">${num}</span> `
+            }
+        })
+        body += '<br>'
+
+        nums.forEach(function(num) {
+        {
+            if (num % 2 == 0) {
+                body += `<span style="color: blue;">${num}</span> `
+            }
+            else
+            {
+                body += `<span style="color: red;">${num}</span> `
+            }
+        }})
+        body += '<br>'
+
+        nums.forEach(num => ColorEvenOdd(num))
+
+        function ColorEvenOdd(num) {
+            if (num % 2 == 0) {
+                body += `<span style="color: blue;">${num}</span> `
+            }
+            else
+            {
+                body += `<span style="color: red;">${num}</span> `
+            }
+        }
+        body += '<br>'
+
+
+        body += '<br><br>'
+
+        body += "Blue even red odd (by index):"
+        body += '<br>'
+
+        nums.forEach((num, index) => {
+            if (index % 2 == 0) {
+                body += `<span style="color: blue;">${num}</span>,`
+            }
+            else
+            {
+                body += `<span style="color: red;">${num}</span>,`
+            }
+        })
+
+        document.body.innerHTML = body
+    </script>
+</body>
+</html>

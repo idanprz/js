@@ -9,7 +9,11 @@
 <body>
     <h1>Bank</h1>
 
+    <div id="display"></div>
+
     <script>
+        let tempDisplay = ''
+
         //###################################################### Costumer class ######################################################
         class Costumer {
 
@@ -17,14 +21,12 @@
             name = ''
             id = 0
             balance = 0
-            isActive = false
-            isExpanded = false
-
+            activityDisplay = 'block'
+            expansionDisplay = 'none'
             constructor(name, balance) {
                 this.name = name
                 this.id = ++Costumer.instanceCount
                 this.balance = balance
-                this.isActive = true
             }
 
             deposit = function deposit(amount) {
@@ -37,10 +39,7 @@
                 disp.innerHTML = `${this.balance}$`
                 textbox.value = textbox.placeholder
 
-                this.isExpanded = false
                 DisplayAllCostomers()
-
-                this.display()
             }
 
             withdraw = function withdraw(amount) {
@@ -53,25 +52,25 @@
                 disp.innerHTML = `${this.balance}$`
                 textbox.value = textbox.placeholder
 
-                this.isExpanded = false
                 DisplayAllCostomers()
-
-                this.display()
             }
 
             display = function display() {
-                if (this.isExpanded == true) {
-                    document.getElementById(`infoDisplay${this.id}`).style.display = 'none'
-                    this.isExpanded = false
+                // block == expand, none == minimize
+                if (this.expansionDisplay == 'block') {
+                    this.expansionDisplay = 'none'
                 }
                 else {
-                    document.getElementById(`infoDisplay${this.id}`).style.display = 'block'
-                    this.isExpanded = true
+                    this.expansionDisplay = 'block'
                 }
+
+                DisplayAllCostomers()
             }
 
             remove = function remove() {
-                this.isActive = false
+                // make inactive - hide
+                this.activityDisplay = 'none'
+
                 DisplayAllCostomers()
             }
         }
@@ -103,31 +102,58 @@
         }
 
         function DepositAll(amount) {
-            for (let i = 0; i < costumers.length; ++i) {
-                costumers[i].deposit(amount)
-            }
+            costumers.forEach(elem => elem.deposit(amount))
         }
 
         function WithdrawAll(amount) {
-            for (let i = 0; i < costumers.length; ++i) {
-                costumers[i].withdraw(amount)
-            }
+            costumers.forEach(elem => elem.withdraw(amount))
         }
 
         function BankFunds() {
             let funds = 0
 
-            for (let i = 0; i < costumers.length; ++i) {
-                funds += costumers[i].balance
-            }
+            costumers.forEach(elem => funds += elem.balance)
 
             alert(`Total bank funds: ${funds}$`)
         }
 
         //###################################################### utils ######################################################
 
+
+        function CreateSingleCostGUI(costumer,idx) {
+            tempDisplay += `<div class="bg-white card mb-4 order-list shadow-sm" style="display: ${costumer.activityDisplay};">
+                                <div class="gold-members p-4">
+                                    <div class="media">
+                                        <span class="text-white bg-dark">CostName${costumer.id}</span><br>
+                                        <div class="media-body">
+                                            <div class="float-right">
+                                                <button onclick="DisplayCostumerInfo(${idx})" class="btn btn-sm btn-success"><i class="icofont-info"></i>Show info</a>
+                                                <button onclick="RemoveCostumer(${idx})" class="btn btn-sm btn-danger"><i class="icofont-close"></i>
+                                                    Remove</a>
+                                            </div>
+                                            <div id="infoDisplay${costumer.id}" style="display: ${costumer.expansionDisplay};">
+                                                <p class="mb-0 text-black text-primary pt-2">
+                                                    <span class="text-black font-weight-bold">
+                                                        To add more info... <br>
+                                                        <label for="amount">Balance: </label>
+                                                        <div id="balanceDisplay${idx}">${costumer.balance}$</div>
+                                                        <label for="amount">Enter amount: </label>
+                                                        <input id="amountTextbox${idx}" placeholder="Amount"> <br><br>
+                                                        
+                                                        <button class="btn btn-primary" onclick="costumers[${idx}].withdraw(amountTextbox${idx}.value)"><i class="icofont-minus">Withdraw</i></button>
+                                                        <button class="btn btn-primary" onclick="costumers[${idx}].deposit(amountTextbox${idx}.value)"><i class="icofont-plus">Deposit</i></button>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`
+        }
+
         function DisplayAllCostomers() {
-            let display = ` <button onclick="DepositAll(100)" class="btn btn-sm btn-success">Credit</button>
+            tempDisplay = ` <button onclick="DepositAll(100)" class="btn btn-sm btn-success">Credit</button>
                             <button onclick="WithdrawAll(200)" class="btn btn-sm btn-danger">Commision</button>
                             <button onclick="BankFunds(200)" class="btn btn-sm btn-info">Total Funds</button>
                             <div class="container">
@@ -135,48 +161,13 @@
                                     <div class="col-md-9">
                                         <div class="osahan-account-page-right shadow-sm bg-white p-4 h-100">
                                             <div class="tab-content" id="myTabContent">
-                                                <div class="tab-pane  fade  active show" id="orders" role="tabpanel" aria-labelledby="orders-tab">
-                                                    <h4 class="font-weight-bold mt-0 mb-4">My Bank</h4>`
+                                                <div class="tab-pane  fade  active show" id="orders" role="tabpanel" aria-labelledby="orders-tab">`
+                                                    
+            costumers.forEach((costumer, idx) => CreateSingleCostGUI(costumer,idx))
 
-            for (let idx = 0; idx < costumers.length; idx++) {
-                if (costumers[idx].isActive == true) {
-                    const costID = idx + 1
+            tempDisplay += `</div></div></div></div></div></div>`
 
-                    display += `<div class="bg-white card mb-4 order-list shadow-sm">
-                                    <div class="gold-members p-4">
-                                        <div class="media">
-                                            <span class="text-white bg-dark">CostName${costID}</span><br>
-                                            <div class="media-body">
-                                                <div class="float-right">
-                                                    <button onclick="DisplayCostumerInfo(${idx})" class="btn btn-sm btn-success"><i class="icofont-info"></i>Show info</a>
-                                                    <button onclick="RemoveCostumer(${idx})" class="btn btn-sm btn-danger"><i class="icofont-close"></i>
-                                                        Remove</a>
-                                                </div>
-                                                <div id="infoDisplay${costID}" style="display: none;">
-                                                    <p class="mb-0 text-black text-primary pt-2">
-                                                        <span class="text-black font-weight-bold">
-                                                            To add more info... <br>
-                                                            <label for="amount">Balance: </label>
-                                                            <div id="balanceDisplay${idx}">${costumers[idx].balance}$</div>
-                                                            <label for="amount">Enter amount: </label>
-                                                            <input id="amountTextbox${idx}" placeholder="Amount"> <br><br>
-                                                            
-                                                            <button class="btn btn-primary" onclick="costumers[${idx}].withdraw(amountTextbox${idx}.value)"><i class="icofont-minus">Withdraw</i></button>
-                                                            <button class="btn btn-primary" onclick="costumers[${idx}].deposit(amountTextbox${idx}.value)"><i class="icofont-plus">Deposit</i></button>
-                                                        </span>
-                                                    </p>
-                                                </div>
-                                                <hr>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>`
-                }
-            }
-
-            display += `</div></div></div></div></div></div>`
-
-            document.body.innerHTML = display
+            display.innerHTML = tempDisplay
         }
 
     </script>

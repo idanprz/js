@@ -1,0 +1,63 @@
+<!-- create an array from array of nums -> true for even false for odd -->
+
+<html lang="en">
+<head>
+</head>
+<body>
+    <script>
+        // ############################################# Inits #############################################
+        let nums = []
+        let isEvenArr = []
+        let isEvenArr2 = []
+        let body = ''
+        
+        for (let i = 0; i < 15; ++i) {
+            nums[i] = Math.floor(Math.random()*20)
+        }
+
+        body += "True even False odd (by value):"
+        body += '<br>'
+        body += '<br>'
+
+        // ############################################# Foreach #############################################
+
+        body += "Using foreach:"
+        body += '<br>'
+        
+        nums.forEach((num,idx) => {
+            isEvenArr[idx] = num%2 == 0
+        })
+
+        body += '<br>'
+        nums.forEach((num,idx) => {
+            body += `${nums[idx]} `
+        })
+        
+        body += '<br>'
+        isEvenArr.forEach((num,idx) => {
+            body += `${isEvenArr[idx]} `
+        })
+
+        body += '<br>'
+        body += '<br>'
+
+        // ############################################# Map #############################################
+
+        body += "Using map:"
+        body += '<br>'
+        
+        isEvenArr2 = nums.map(num => num%2 == 0)
+        body += '<br>'
+        nums.forEach((num,idx) => {
+            body += `${nums[idx]} `
+        })
+        body += '<br>'
+        isEvenArr2.forEach((num,idx) => {
+            body += `${isEvenArr2[idx]} `
+        })
+
+
+        document.body.innerHTML = body
+    </script>
+</body>
+</html>
