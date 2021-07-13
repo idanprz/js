@@ -1,0 +1,98 @@
+<html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<div class="row" style="margin: 2%;">
+    <div class="col">
+        <h1>Input radius value and get the volume of the sphere. </h1><br>
+        <label for="textRadius"><b>Radius:</b></label><br>
+        <input class="form-control" id="textRadius" value=100>
+        <br><br>
+        <label for="textVolume"><b>Volume:</b></label><br>
+        <input class="form-control" id="textVolume" disabled>
+        <br><br>
+        <button class="btn btn-primary btn-lg btn-block" onclick="clearInterval(intervalID);ClearCanvas();DisplayVolume(+textRadius.value);
+        DrawCircle(myCanvas.width/2, myCanvas.height/2, +textRadius.value)">Draw</button>
+        <br><br>
+    </div>
+    <div class="col">
+        <canvas id="myCanvas" style="border:1px solid #d3d3d3;">
+            Your browser does not support the HTML5 canvas tag.</canvas>
+        <br><br>
+        <button class="btn btn-primary btn-lg" onclick="clearInterval(intervalID);ClearCanvas();" style="width: 100%;">Clear</button>
+        <br><br>
+    </div>
+</div>
+
+<body>
+    <script>
+        let intervalID = setInterval(DrawDemoCircles, 100)
+
+        Init()
+
+        function Init() {
+            myCanvas.width = window.innerWidth * 0.6
+            myCanvas.height = window.innerHeight * 0.5
+        }
+
+        function DrawCircle(startX, startY, radius) {
+            let canvas = document.getElementById("myCanvas");
+            let context = canvas.getContext("2d");
+
+            // validate out of range circles
+            if (startX + radius > myCanvas.width ||
+                startY + radius > myCanvas.height) {
+                alert('Your sphere is too big!')
+
+                return
+            }
+
+            context.beginPath();
+            // x, y, radius, start angle, end angle
+            context.arc(startX, startY, radius, 0, 2 * Math.PI);
+            context.stroke();
+            context.closePath();
+        }
+
+        function ClearCanvas() {
+            const context = myCanvas.getContext('2d');
+            context.clearRect(0, 0, myCanvas.width, myCanvas.height);
+        }
+
+        function DrawDemoCircles() {
+            let minSide = Math.min(myCanvas.width, myCanvas.height)
+            let nextRad = randNum(minSide / 2)
+
+            DrawCircle(myCanvas.width / 2, myCanvas.height / 2, nextRad)
+        }
+
+        function DisplayVolume(rad) {
+            if (!IsNumeric(rad)) {
+                alert('Please enter a valid number!')
+
+                return
+            }
+
+            textVolume.value = VolumeSphere(rad)
+        }
+
+        // ################################################# utils #################################################
+
+        function VolumeSphere(rad) {
+            return 4 * Math.PI * Math.pow(rad, 3) / 3
+        }
+
+        function randNum(max = 10) {
+            return Math.floor(Math.random() * max)
+        }
+
+        function IsNumeric(num) {
+            return !isNaN(parseFloat(num)) && isFinite(num)
+        }
+
+    </script>
+
+</body>
+</html>

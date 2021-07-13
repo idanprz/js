@@ -1,0 +1,24 @@
+<html lang="en">
+
+<body id="body">
+    <br><br><br>
+    <div id="display"></div>
+    <script>
+        function getParam(key){
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const value = urlParams.get(key)
+            if(value ==null )return ''
+            return value
+        }
+        
+        body.style.backgroundColor=getParam('color')
+        let fname=getParam('fname')
+        let lname=getParam('lname')
+        let age=getParam('age')
+        let id=getParam('id')
+        body.innerHTML += `<h1> ${fname}<br>${lname}<br>${age}<br>${id}<br>`
+    </script>
+</body>
+
+</html>

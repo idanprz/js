@@ -1,0 +1,106 @@
+
+<html>
+<head></head>
+<div>
+    <h1>circle: </h1>
+
+    <input id="startxCrc" type="text" placeholder="Start X" value=500>
+    <input id="startyCrc" type="text" placeholder="Start Y" value=250>
+    <input id="radiusCrc" type="text" placeholder="Radius" value=100>
+    <br><br>
+    <button onclick="RandomizeCircle()">Randomize</button>
+    <br><br>
+    <button onclick="setInterval(ExpandingCircle, 20)">Expand</button>
+    <br><br>
+    <button onclick="DrawCircle(startxCrc.value, startyCrc.value, radiusCrc.value)">Confirm</button>
+</div>
+<div>
+    <h1>square: </h1>
+
+    <input id="startxSq" type="text" placeholder="Start X" value=500>
+    <input id="startySq" type="text" placeholder="Start Y" value=250>
+    <input id="widthSq" type="text" placeholder="Width" value=100>
+    <button onclick="RandomizeSquare()">Randomize</button>
+    <br><br>
+    <button onclick="DrawSquare(startxSq.value, startySq.value, widthSq.value)">Confirm</button>
+</div>
+<br><br>
+<body>
+
+    <canvas id="myCanvas" width="1000" height="500" style="border:1px solid #d3d3d3;">
+        Your browser does not support the HTML5 canvas tag.</canvas>
+
+    <script>
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        setInterval(() => {
+            
+        }, interval);
+
+        function DrawCircle(startX, startY, radius) {
+            ClearCanvas()
+
+            ctx.beginPath();
+            // x, y, radius, start angle, end angle
+            ctx.arc(startX, startY, radius, 0, 2 * Math.PI);
+            ctx.fillStyle = 'yellow'
+            ctx.strokeStyle = 'yellow'
+            ctx.fill()
+            ctx.stroke();
+            ctx.closePath();
+        }
+
+        function DrawSquare(startX, startY, width) {
+            ClearCanvas()
+
+            ctx.beginPath();
+            // x, y, width, height
+            ctx.rect(startX, startY, width, width)
+            ctx.fillStyle = 'green'
+            ctx.strokeStyle = 'green'
+            ctx.fill()
+            ctx.stroke();
+            ctx.closePath();
+        }
+
+        function RandomizeCircle() {
+            ClearCanvas()
+
+            startX = randNum(myCanvas.width)
+            startY = randNum(myCanvas.height)
+            startRad = randNum(myCanvas.height)
+
+            DrawCircle(startX, startY, startRad)
+        }
+
+        function RandomizeSquare() {
+            ClearCanvas()
+
+            startX = randNum(myCanvas.width)
+            startY = randNum(myCanvas.height)
+            startWidth = randNum(myCanvas.height)
+
+            DrawSquare(startX, startY, startWidth)
+        }
+
+        function ClearCanvas() {
+            const context = myCanvas.getContext('2d');
+            context.clearRect(0, 0, myCanvas.width, myCanvas.height);
+        }
+        
+        function ExpandingCircle() {
+            radiusCrc.value = +radiusCrc.value > 500 ? 0 : +radiusCrc.value + randNum(10)
+
+            DrawCircle(startxCrc.value, startyCrc.value, radiusCrc.value)
+
+            
+        }
+
+        function randNum(max = 10) {
+            return Math.floor(Math.random() * max)
+        }
+
+    </script>
+
+</body>
+</html>

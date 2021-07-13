@@ -1,0 +1,45 @@
+<html lang="en">
+<head></head>
+<body>
+    <label for="textName">Name: </label>
+    <input id="textName" placeholder="Name"> <br><br>
+    <label for="textColor">Color: </label>
+    <input id="textColor" placeholder="Color"> <br><br>
+
+    <br><br><br>
+    <div id="display"></div>
+
+    <script>
+        // function getParam(param) {
+        //     const queryString = window.location.search;
+        //     const urlParams = new URLSearchParams(queryString);
+        //     return urlParams.get(param)
+        // }
+
+        // document.body.style.backgroundColor = getParam('color')
+
+        let students = [{ id: 1, sName: 'Ortal', color: 'green' }, { id: 2, sName: 'Talmor', color: 'blue' }]
+        
+        function updGui() {
+            display.innerHTML=''
+            students.forEach(stu => {
+                display.innerHTML += ` <div class="col"><div class="card">
+                Student id:${stu.id} <br>
+                Student sName:${stu.sName}<br>
+                Student IMG <img src='aaa' alt='image' </div></div> `
+            })
+        }
+
+        function addStudent(){
+            if(sduName.value.length <3)return
+            if(isNaN(sduName.value) )return
+            students.push({id:students.length +1,sName:textName.value,color:textColor.value});
+            updGui()
+        }
+        updGui()
+
+    </script>
+
+</body>
+
+</html>

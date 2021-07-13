@@ -1,0 +1,145 @@
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: burlywood;
+        }
+
+    </style>
+</head>
+    <body>
+        
+        <!-- <a href=`StudentPage.html?color=${textColor.value}`>Student Page</a> -->
+    <div id="gui" style="margin: 2%;">
+        <label for="textFirstName">First name: </label>
+        <input id="textFirstName" placeholder="First name" value='fname'> <br><br>
+        <label for="textLastName">Last name: </label>
+        <input id="textLastName" placeholder="Last name" value='lname'> <br><br>
+        <label for="textAge">Age: </label>
+        <input id="textAge" placeholder="Age" value=20> <br><br>
+        <label for="textID">ID: </label>
+        <input id="textID" placeholder="ID" value=99999999> <br><br>
+        <label for="textColor">Color: </label>
+        <input id="textColor" placeholder="Color" value='green'> <br><br>
+
+        <button onclick="AddStudent(textFirstName.value, textLastName.value, textAge.value, textID.value)">Confirm</button>
+        <button onclick="ChangeTheme()">Change theme</button>
+
+    </div>
+    <br>
+<!--   -->
+    <script>
+        // ################################################ Inits ################################################
+        let students = []
+        let studentsCounter = 0
+
+        class Student {
+            name = ''
+            age = 0
+            id = 0
+
+            constructor(name, age, id) {
+                this.name = name
+                this.age = age
+                this.id = id
+            }
+        }
+
+        class Theme {
+            backgroundCols = {0: 'white', 1: 'black'}
+            fontCols = {0: 'black', 1: 'white'}
+
+            currTheme = 0
+            innerTheme = 1
+            bgCol = 'white'
+            fntCol = 'black'
+            divBgCol = 'black'
+            divFntCol = 'white'
+        }
+        const theme = new Theme()
+
+        function RefershDisplay() {
+            let tempDisplay = `<div class="row row-cols-1 row-cols-md-2 g-2 d-flex justify-content-center" style="margin: 2%">`
+
+            students.forEach((student, index) => {
+                tempDisplay += 
+                `<div class="col">
+                    <div class="card" style="text-align: center; background-color: ${theme.divBgCol}; 
+                    color: ${theme.divFntCol};">
+                    Name: ${student.name}<br>
+                    Age: ${student.age}<br>
+                    ID: ${student.id}<br>
+                    <a href="StudentPage.html?fname=${textFirstName.value}&lname=${textLastName.value}&id=${textID.value}&age=${textAge.value}&color=${textColor.value}">Student Page</a>
+                    </div></div>`
+            })
+
+            tempDisplay += `</div>`
+
+            userDisplay.innerHTML = tempDisplay
+
+            // clear textboxes
+            // textFirstName.value = ''
+            // textLastName.value = ''
+            // textID.value = ''
+        }
+
+        // ################################################ Funcs ################################################
+
+        function IsNumeric(num) {
+            return !isNaN(parseFloat(num)) && isFinite(num)
+        }
+
+        function AddStudent(first, last, age, id) {
+            if (!first.match("^[A-Za-z]{3,10}") || !last.match("^[A-Za-z]{3,10}")) {
+                alert('Please enter a 3-10 character name containing only alphabetic letters')
+
+                return
+            }
+
+            if (!IsNumeric(age)/*  || age < 0 || age > 120 */) {
+                alert('Please enter a valid 9 digit number')
+
+                return
+            }
+
+            if (!IsNumeric(id)/*  || id.length != 9 */) {
+                alert('Please enter a valid 9 digit number')
+
+                return
+            }
+
+            students.push(new Student(`${first} ${last}`, age, id))
+            studentsCounter++
+
+            RefershDisplay()
+        }
+
+        function ChangeTheme() {
+            theme.innerTheme = theme.currTheme
+            theme.currTheme = (theme.currTheme < 1  ? theme.currTheme + 1 : 0)
+
+            theme.bgCol = theme.backgroundCols[theme.currTheme]
+            theme.fntCol = theme.fontCols[theme.currTheme]
+            theme.divBgCol = theme.backgroundCols[theme.innerTheme]
+            theme.divFntCol = theme.fontCols[theme.innerTheme]
+
+            document.body.style.backgroundColor = theme.bgCol
+            document.body.style.color = theme.fntCol
+            
+            RefershDisplay()
+        }
+
+        // ################################################ Utils ################################################
+
+    </script>
+</body>
+
+<div id="userDisplay" class="container d-flex justify-content-center"></div>
+
+</html>
