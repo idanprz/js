@@ -1,0 +1,30 @@
+<!-- Slider: <mat-slider style="background-color: black;" min="1" max="100" step="1" value="1"></mat-slider><br>
+Address form: <app-my-form></app-my-form><br> -->
+<!-- Navigation: <app-mynavigation></app-mynavigation> -->
+<!-- Table: <app-my-table></app-my-table><br>
+Dashboard: <app-my-dashboard></app-my-dashboard><br>
+Tree: <app-tree></app-tree>
+Button: <app-my-button></app-my-button> -->
+
+
+<html lang="en">
+
+<button (click)="GetPosts()">Get Posts</button><br>
+<input #postBox placeholder="post">
+<button (click)="GetPost(+postBox.value)">Get Post</button><br>
+<input #idBox placeholder="id">
+<input #titleBox placeholder="title">
+<input #authorBox placeholder="author">
+<button (click)="PostPost({ id: +idBox.value, title: titleBox.value, author: authorBox.value } ) ; ">Post
+    Post</button>
+<!-- <button (click)="del(idBox.value)">Del Post</button>
+<button
+    (click)="put( ServerURL, { id: idBox.value, title: titleBox.value, author: authorBox.value } ) ; ">Put</button><br> -->
+
+<div #display value=""></div>
+
+<body>
+
+</body>
+
+</html>

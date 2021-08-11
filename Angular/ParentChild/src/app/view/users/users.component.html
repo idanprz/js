@@ -1,0 +1,11 @@
+<div class="container">
+  <div class="row row-cols-4">
+    <div *ngFor="let user of users">
+      <h6>user</h6>
+      <app-user-details [user]=user></app-user-details>
+      <app-posts [userId]=user.id></app-posts>
+      <app-albums [userId]=user.id></app-albums>
+      <!-- TODO add todos -->
+    </div>
+  </div>
+</div>

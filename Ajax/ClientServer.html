@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    Name:<input id="objName"><br><br>
+    ID:<input id="objID"><br><br>
+    <button type="button" onclick="loadObj(objName.value, objID.value)">Get obj</button>
+    <div id="demo">
+        Server result should display here
+    </div>
+    
+    <script>
+        demo.innerHTML = ''
+
+        function loadObj(strName, id) {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    obj = parseObj(this.responseText)
+                    //   demo.innerHTML = this.responseText;
+                    demo.innerHTML += `${obj.id} ${obj.title}<br>`
+                }
+            };
+
+            xhttp.open("GET", `https://jsonplaceholder.typicode.com/${strName}/${id}`, true);
+            xhttp.send();
+        }
+
+        function parseObj(obj) {
+            return JSON.parse(obj)
+        }
+    </script>
+    
+
+</body>
+
+</html>

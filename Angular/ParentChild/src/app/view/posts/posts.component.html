@@ -1,0 +1,9 @@
+<!-- <div class="container">
+    <div class="row row-cols-4"> -->
+        <div *ngFor="let post of userPosts">
+            <app-post-details [post]=post></app-post-details>
+            <app-comments [postId]=post.id></app-comments>
+        </div>
+    <!-- </div>
+</div> -->
+

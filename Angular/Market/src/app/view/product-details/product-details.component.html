@@ -1,0 +1,10 @@
+<div>
+    {{productId}} - {{productCategory}}
+    {{productName}}
+    {{productPrice}}
+    {{productImg}}
+
+    <button (click)="Qty = Qty + 1">Buy</button>
+    <button (click)="Qty = Qty > 0 ? Qty - 1 : Qty">Remove</button>
+    <input id="QtyTextbox" value={{Qty}} readonly>
+</div>

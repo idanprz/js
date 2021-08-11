@@ -1,0 +1,96 @@
+<html lang="en">
+<head>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <input id="userInput" placeholder="User name">
+    <button onclick="FindUser(`${userInput.value}`)">Search user</button>
+    <button onclick="FindUser('')">Show all</button>
+    <hr>
+
+    <!-- <div id="userPosts"></div> -->
+    <table id="display"></table>
+
+    <script>
+
+        class MyUser {
+            name
+            email
+            address_city
+            adr_geo_lng
+            company_name
+
+            constructor(name, email, address_city, adr_geo_lng, company_name) {
+                this.name = name
+                this.email = email
+                this.address_city = address_city
+                this.adr_geo_lng = adr_geo_lng
+                this.company_name = company_name
+            }
+        }
+
+        function FindUser(userName) {
+            fetch('https://jsonplaceholder.typicode.com/users')
+                .then(userArrStr => userArrStr.json())
+                .then(userArr => buildGUI(userArr, userName))
+        }
+
+        function buildGUI(userArr, userName) {
+
+            userArr = userArr.filter(user => user.name.startsWith(`${userName}`))
+
+            let myUserArr = ConvertUserArray(userArr)
+
+            display.innerHTML = `
+            <tr>
+                <td><b>Name</b></td>
+                <td><b>Email</b></td>
+                <td><b>City</b></td>
+                <td><b>Geo lng</b></td>
+                <td><b>Company</b></td>
+            </tr>`
+
+            myUserArr.forEach(user => {
+                display.innerHTML += `
+                <tr>
+                    <td>${user.name} </td>
+                    <td>${user.email} </td>
+                    <td>${user.address_city} </td>
+                    <td>${user.adr_geo_lng} </td>
+                    <td>${user.company_name} </td>
+                </tr>`
+            })
+        }
+
+        function ConvertUserArray(userArr) {
+            return userArr.map(user => ConvertUser(user))
+        }
+
+        function ConvertUser(user) {
+            return new MyUser(user.name, user.email, user.address.city, user.address.geo.lng, user.company.name)
+        }
+
+        // function showPosts(id) {
+        //     fetch(`https://jsonplaceholder.typicode.com/posts`)
+        //         .then(response => response.json())
+        //         .then(json => buildGUIPost(json,id))
+        // }
+
+        // function buildGUIPost(json,id) {
+        //     userPosts.innerHTML=''
+        //     json= json.filter(x => x.userId == id)
+        //     json.forEach(post => {
+        //         userPosts.innerHTML += `title:${post.title}  <br>
+        //         <span style='color:red'> body:${post.body}</span><br>`
+        //     });
+        // }
+    </script>
+</body>
+</html>

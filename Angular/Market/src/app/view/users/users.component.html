@@ -1,0 +1,8 @@
+<div class="container">
+  <div class="row row-cols-4">
+    <div *ngFor="let user of users">
+      <app-user-details [id]=user.id name={{user.name}} username={{user.username}} email={{user.email}}>
+      </app-user-details>
+    </div>
+  </div>
+</div>

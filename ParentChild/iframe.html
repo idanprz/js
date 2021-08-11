@@ -1,0 +1,15 @@
+<html lang="en">
+<head>
+</head>
+<body>
+    <button onclick="ChangeParentBG('red')">red</button>
+    <button onclick="ChangeParentBG('green')">green</button>
+    <button onclick="ChangeParentBG('blue')">blue</button>
+    
+    <script>
+        function ChangeParentBG(color) {
+            parent.document.body.style.backgroundColor = color
+        }
+    </script>
+</body>
+</html>
